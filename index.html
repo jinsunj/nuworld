@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>NU_WORLD_236777_protocol</title>
+<title>NU WORLD 236777 PROTOCOL</title>
 
 <!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -68,15 +68,9 @@ button {
 }
 
 @keyframes pulse {
-  0% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.4;
-  }
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
 }
 
 input {
@@ -104,35 +98,13 @@ input {
   letter-spacing: 2px;
 }
 
-#numberFlood {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-  color: #cfcfcf;
-  font-size: 14px;
-  overflow: hidden;
-  display: none;
-}
-
+/* TRACE ARCHIVE */
 #traceArchive {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: black;
-  color: #cfcfcf;
-  font-size: 18px;
-  line-height: 1.6;
-  letter-spacing: 1px;
-  padding: 40px;
-  overflow-y: auto;
-  display: none;
-  font-family: "Pretendard", monospace;
   pointer-events: none;
+  display: none;
 }
 
 .trace-item {
@@ -140,14 +112,16 @@ input {
   transform: translate(-50%, -50%);
   opacity: 0.9;
   white-space: nowrap;
-  font-size: 24px;
+  font-size: 24px; /* ✅ 요청한 크기 */
 }
-/* Scale down the result screen */
+
+/* RESULT SCALE */
 #result {
   transform: scale(0.7);
   transform-origin: center;
 }
 
+/* ENDING */
 #infinity {
   position: fixed;
   top: 50%;
@@ -171,58 +145,18 @@ input {
 }
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 64px;
-  }
-
-  #result h1 {
-    font-size: 72px;
-  }
-
-  .big {
-    font-size: 40px;
-  }
-
-  .small {
-    font-size: 20px;
-  }
-
-  #converting {
-    font-size: 32px;
-  }
-
-  input {
-    font-size: 28px;
-    padding: 18px;
-  }
-
-  button {
-    font-size: 28px;
-    padding: 18px 36px;
-  }
-
-  #traceArchive {
-    font-size: 28px;
-    padding: 24px;
-  }
-
-  #infinity {
-    font-size: 70vw;
-  }
-
-  #preInfinity {
-    font-size: 36px;
-  }
-
-  .title {
-    margin-bottom: 80px;
-  }
-  .enter-label {
-    font-size: 36px;
-  }
+  h1 { font-size: 64px; }
+  #result h1 { font-size: 72px; }
+  .big { font-size: 40px; }
+  .small { font-size: 20px; }
+  #converting { font-size: 32px; }
+  input { font-size: 28px; }
+  button { font-size: 28px; }
+  #infinity { font-size: 70vw; }
+  #preInfinity { font-size: 36px; }
+  .enter-label { font-size: 36px; }
 }
 </style>
-
 </head>
 
 <body>
@@ -235,7 +169,7 @@ input {
 
 <!-- SCREEN 2 -->
 <div class="screen" id="input">
-  <div class="enter-label">ENTER YOUR NAME</div><br>
+  <div class="enter-label">ENTER YOUR NAME</div>
   <input id="nameInput" placeholder="name">
   <button onclick="startConvert()">LOGOUT</button>
 </div>
@@ -248,45 +182,29 @@ input {
 <!-- SCREEN 4 -->
 <div class="screen" id="result">
   <h1>WELCOME TO IDEA.</h1>
-
   <div class="big" id="userTrace"></div>
   <div class="small">THIS TRACE IS REVERSIBLE AND ENCODED IN UNICODE.</div>
-
   <br><br>
-
   <div class="big" id="totalTraces"></div>
   <div class="small">THIS ARCHIVE IS LOCAL</div>
-
   <br><br>
-
   <button id="exploreBtn" onclick="enterIdea()">EXPLORE IDEA?</button>
 </div>
 
 <div id="traceArchive"></div>
-<div id="numberFlood"></div>
 <div id="preInfinity"></div>
 <div id="infinity">∞</div>
 
 <script>
-/* =========================
-   SUPABASE CONFIG (STEP 1)
-========================= */
+/* SUPABASE */
 const SUPABASE_URL = "https://lnbrorrwoxqqpijylyhv.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_s10vM9wJnHdVgHEzSL4mfA_JvWMBiNn";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-/* =========================
-   CORE LOGIC
-========================= */
 let traceNumber = "";
 
-function goToInput() {
-  switchScreen("input");
-}
+/* NAV */
+function goToInput() { switchScreen("input"); }
 
 function startConvert() {
   const name = document.getElementById("nameInput").value;
@@ -310,11 +228,7 @@ function startConvert() {
 }
 
 function encodeName(name) {
-  return Array.from(name).map(ch => ch.charCodeAt(0)).join("-");
-}
-
-function decodeTrace(trace) {
-  return trace.split("-").map(code => String.fromCharCode(Number(code))).join("");
+  return Array.from(name).map(c => c.charCodeAt(0)).join("-");
 }
 
 async function showResult() {
@@ -323,10 +237,7 @@ async function showResult() {
   document.getElementById("userTrace").innerText =
     "USER TRACE : " + traceNumber;
 
-  // SAVE TRACE TO SUPABASE
-  await supabaseClient
-    .from("traces")
-    .insert([{ trace_id: traceNumber }]);
+  await supabaseClient.from("traces").insert([{ trace_id: traceNumber }]);
 
   const { count } = await supabaseClient
     .from("traces")
@@ -336,6 +247,7 @@ async function showResult() {
     "TOTAL TRACES STORED : " + count;
 }
 
+/* ARCHIVE FLOOD */
 async function showTraceArchive() {
   switchScreen(null);
 
@@ -345,28 +257,20 @@ async function showTraceArchive() {
 
   archive.innerHTML = "";
   archive.style.display = "block";
-  infinity.style.display = "none";
-  preInfinity.style.display = "none";
 
-  const { data, error } = await supabaseClient
+  const { data } = await supabaseClient
     .from("traces")
     .select("trace_id")
     .order("created_at", { ascending: true });
 
-  if (error || !data) {
-    archive.innerText = "ARCHIVE CORRUPTED";
-    return;
-  }
-
-  let index = 0;
-  const floodInterval = setInterval(() => {
-    if (index >= data.length) {
-      clearInterval(floodInterval);
-
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i >= data.length) {
+      clearInterval(interval);
       setTimeout(() => {
         archive.style.display = "none";
         preInfinity.innerText =
-          "YOU ARE THE " + data.length + "th TRACE BEFORE ARCHIVAL";
+          `YOU ARE THE ${data.length}th TRACE BEFORE ARCHIVAL`;
         preInfinity.style.display = "block";
 
         setTimeout(() => {
@@ -374,37 +278,32 @@ async function showTraceArchive() {
           infinity.style.display = "block";
         }, 3000);
       }, 2000);
-
       return;
     }
 
-    const line = document.createElement("div");
-    line.className = "trace-item";
-    line.innerText = data[index].trace_id;
+    const item = document.createElement("div");
+    item.className = "trace-item";
+    item.innerText = data[i].trace_id;
 
     const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight * 0.6;
+    const centerY = window.innerHeight * 0.72; 
 
-    const offsetX = (Math.random() - 0.5) * window.innerWidth * 0.4;
+    const offsetX = (Math.random() - 0.5) * window.innerWidth * 0.5;
     const offsetY = (Math.random() - 0.5) * window.innerHeight * 0.25;
 
-    line.style.left = centerX + offsetX + "px";
-    line.style.top = centerY + offsetY + "px";
+    item.style.left = centerX + offsetX + "px";
+    item.style.top = centerY + offsetY + "px";
 
-    archive.appendChild(line);
-    index++;
+    archive.appendChild(item);
+    i++;
   }, 400);
 }
 
-function enterIdea() {
-  showTraceArchive();
-}
+function enterIdea() { showTraceArchive(); }
 
 function switchScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  if (id) {
-    document.getElementById(id).classList.add("active");
-  }
+  if (id) document.getElementById(id).classList.add("active");
 }
 </script>
 
