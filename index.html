@@ -36,9 +36,19 @@ html, body {
 
 h1 {
   font-size: 64px;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   letter-spacing: 3px;
   font-weight: 200;
+}
+
+.title {
+  letter-spacing: 6px;
+}
+
+.enter-label {
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
 }
 
 button {
@@ -133,6 +143,18 @@ input {
   display: none;
 }
 
+#preInfinity {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  letter-spacing: 3px;
+  opacity: 0.85;
+  display: none;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 64px;
@@ -172,6 +194,17 @@ input {
   #infinity {
     font-size: 70vw;
   }
+
+  #preInfinity {
+    font-size: 36px;
+  }
+
+  .title {
+    margin-bottom: 80px;
+  }
+  .enter-label {
+    font-size: 36px;
+  }
 }
 </style>
 
@@ -181,13 +214,13 @@ input {
 
 <!-- SCREEN 1 -->
 <div class="screen active" id="home">
-  <h1>NU_WORLD_236777_PROTOCOL</h1>
+  <h1 class="title">NU WORLD 236777 PROTOCOL</h1>
   <button onclick="goToInput()">LOGOUT</button>
 </div>
 
 <!-- SCREEN 2 -->
 <div class="screen" id="input">
-  <div>ENTER YOUR NAME</div><br>
+  <div class="enter-label">ENTER YOUR NAME</div><br>
   <input id="nameInput" placeholder="name">
   <button onclick="startConvert()">LOGOUT</button>
 </div>
@@ -216,6 +249,7 @@ input {
 
 <div id="traceArchive"></div>
 <div id="numberFlood"></div>
+<div id="preInfinity"></div>
 <div id="infinity">∞</div>
 
 <script>
@@ -292,10 +326,12 @@ async function showTraceArchive() {
 
   const archive = document.getElementById("traceArchive");
   const infinity = document.getElementById("infinity");
+  const preInfinity = document.getElementById("preInfinity");
 
   archive.innerHTML = "";
   archive.style.display = "block";
   infinity.style.display = "none";
+  preInfinity.style.display = "none";
 
   const { data, error } = await supabaseClient
     .from("traces")
@@ -314,7 +350,14 @@ async function showTraceArchive() {
 
       setTimeout(() => {
         archive.style.display = "none";
-        infinity.style.display = "block";
+        preInfinity.innerText =
+          "YOU ARE THE " + data.length + "th TRACE BEFORE ARCHIVAL";
+        preInfinity.style.display = "block";
+
+        setTimeout(() => {
+          preInfinity.style.display = "none";
+          infinity.style.display = "block";
+        }, 1600);
       }, 1200);
 
       return;
