@@ -36,7 +36,7 @@ html, body {
 
 h1 {
   font-size: 64px;
-  margin-bottom: 100px;
+  margin-bottom: 140px;
   letter-spacing: 3px;
   font-weight: 200;
 }
@@ -46,7 +46,7 @@ h1 {
 }
 
 .enter-label {
-  font-size: 40px;
+  font-size: 48px;
   letter-spacing: 2px;
   margin-bottom: 20px;
 }
@@ -383,10 +383,10 @@ async function showTraceArchive() {
     line.innerText = data[index].trace_id;
 
     const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+    const centerY = window.innerHeight * 0.6;
 
-    const offsetX = (Math.random() - 0.5) * window.innerWidth * 0.6;
-    const offsetY = (Math.random() - 0.5) * window.innerHeight * 0.6;
+    const offsetX = (Math.random() - 0.5) * window.innerWidth * 0.4;
+    const offsetY = (Math.random() - 0.5) * window.innerHeight * 0.25;
 
     line.style.left = centerX + offsetX + "px";
     line.style.top = centerY + offsetY + "px";
