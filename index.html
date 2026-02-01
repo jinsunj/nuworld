@@ -45,9 +45,10 @@ button {
   background: transparent;
   border: 1px solid #777;
   color: #cfcfcf;
-  padding: 10px 20px;
+  padding: 18px 36px;
   font-family: inherit;
   cursor: pointer;
+  font-size: 20px;
 }
 
 #exploreBtn {
@@ -71,18 +72,19 @@ input {
   background: transparent;
   border: 1px solid #555;
   color: #cfcfcf;
-  padding: 10px;
+  padding: 18px;
   font-family: inherit;
   margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .small {
-  font-size: 12px;
+  font-size: 18px;
   opacity: 0.6;
 }
 
 .big {
-  font-size: 24px;
+  font-size: 36px;
   margin-top: 10px;
 }
 
@@ -130,7 +132,6 @@ input {
   color: white;
   display: none;
 }
-</style>
 
 @media (max-width: 768px) {
   h1 {
@@ -172,6 +173,8 @@ input {
     font-size: 70vw;
   }
 }
+</style>
+
 </head>
 
 <body>
@@ -265,22 +268,23 @@ function encodeName(name) {
   return sum;
 }
 
-function showResult() {
+async function showResult() {
   switchScreen("result");
 
   document.getElementById("userTrace").innerText =
     "USER TRACE : " + traceNumber;
 
-  let total = Number(localStorage.getItem("totalTraces") || 0) + 1;
-  localStorage.setItem("totalTraces", total);
-
-  document.getElementById("totalTraces").innerText =
-    "TOTAL TRACES STORED : " + total;
-
   // SAVE TRACE TO SUPABASE
-  supabaseClient
+  await supabaseClient
     .from("traces")
     .insert([{ trace_id: traceNumber }]);
+
+  const { count } = await supabaseClient
+    .from("traces")
+    .select("*", { count: "exact", head: true });
+
+  document.getElementById("totalTraces").innerText =
+    "TOTAL TRACES STORED : " + count;
 }
 
 async function showTraceArchive() {
@@ -311,7 +315,7 @@ async function showTraceArchive() {
       setTimeout(() => {
         archive.style.display = "none";
         infinity.style.display = "block";
-      }, 1500);
+      }, 1200);
 
       return;
     }
