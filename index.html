@@ -131,6 +131,14 @@ input {
   overflow-y: auto;
   display: none;
   font-family: "Pretendard", monospace;
+  pointer-events: none;
+}
+
+.trace-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  white-space: nowrap;
 }
 
 #infinity {
@@ -364,9 +372,19 @@ async function showTraceArchive() {
     }
 
     const line = document.createElement("div");
+    line.className = "trace-item";
     line.innerText = data[index].trace_id;
+
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    const offsetX = (Math.random() - 0.5) * window.innerWidth * 0.6;
+    const offsetY = (Math.random() - 0.5) * window.innerHeight * 0.6;
+
+    line.style.left = centerX + offsetX + "px";
+    line.style.top = centerY + offsetY + "px";
+
     archive.appendChild(line);
-    archive.scrollTop = archive.scrollHeight;
     index++;
   }, 400);
 }
