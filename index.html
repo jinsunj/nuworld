@@ -131,6 +131,47 @@ input {
   display: none;
 }
 </style>
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 64px;
+  }
+
+  #result h1 {
+    font-size: 72px;
+  }
+
+  .big {
+    font-size: 40px;
+  }
+
+  .small {
+    font-size: 20px;
+  }
+
+  #converting {
+    font-size: 32px;
+  }
+
+  input {
+    font-size: 28px;
+    padding: 18px;
+  }
+
+  button {
+    font-size: 28px;
+    padding: 18px 36px;
+  }
+
+  #traceArchive {
+    font-size: 28px;
+    padding: 24px;
+  }
+
+  #infinity {
+    font-size: 70vw;
+  }
+}
 </head>
 
 <body>
@@ -246,30 +287,41 @@ async function showTraceArchive() {
   switchScreen(null);
 
   const archive = document.getElementById("traceArchive");
+  const infinity = document.getElementById("infinity");
+
   archive.innerHTML = "";
   archive.style.display = "block";
+  infinity.style.display = "none";
 
   const { data, error } = await supabaseClient
     .from("traces")
     .select("trace_id")
     .order("created_at", { ascending: true });
 
-  if (error) {
+  if (error || !data) {
     archive.innerText = "ARCHIVE CORRUPTED";
     return;
   }
 
-  data.forEach((row, i) => {
-    const line = document.createElement("div");
-    line.innerText = row.trace_id;
-    archive.appendChild(line);
-  });
+  let index = 0;
+  const floodInterval = setInterval(() => {
+    if (index >= data.length) {
+      clearInterval(floodInterval);
 
-  // 3초 후 무한대로 이동
-  setTimeout(() => {
-    archive.style.display = "none";
-    document.getElementById("infinity").style.display = "block";
-  }, 3000);
+      setTimeout(() => {
+        archive.style.display = "none";
+        infinity.style.display = "block";
+      }, 1500);
+
+      return;
+    }
+
+    const line = document.createElement("div");
+    line.innerText = data[index].trace_id;
+    archive.appendChild(line);
+    archive.scrollTop = archive.scrollHeight;
+    index++;
+  }, 40);
 }
 
 function enterIdea() {
