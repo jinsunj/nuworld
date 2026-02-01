@@ -140,7 +140,7 @@ input {
   transform: translate(-50%, -50%);
   opacity: 0.9;
   white-space: nowrap;
-  font-size: 30px;
+  font-size: 24px;
 }
 /* Scale down the result screen */
 #result {
@@ -250,7 +250,7 @@ input {
   <h1>WELCOME TO IDEA.</h1>
 
   <div class="big" id="userTrace"></div>
-  <div class="small">THIS NUMBER IS ENCODED IN UNICODE.</div>
+  <div class="small">THIS TRACE IS REVERSIBLE AND ENCODED IN UNICODE.</div>
 
   <br><br>
 
@@ -282,7 +282,7 @@ const supabaseClient = supabase.createClient(
 /* =========================
    CORE LOGIC
 ========================= */
-let traceNumber = 0;
+let traceNumber = "";
 
 function goToInput() {
   switchScreen("input");
@@ -310,11 +310,11 @@ function startConvert() {
 }
 
 function encodeName(name) {
-  let sum = 0;
-  for (let i = 0; i < name.length; i++) {
-    sum += name.charCodeAt(i);
-  }
-  return sum;
+  return Array.from(name).map(ch => ch.charCodeAt(0)).join("-");
+}
+
+function decodeTrace(trace) {
+  return trace.split("-").map(code => String.fromCharCode(Number(code))).join("");
 }
 
 async function showResult() {
