@@ -36,7 +36,7 @@ html, body {
 
 h1 {
   font-size: 64px;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
   letter-spacing: 3px;
   font-weight: 200;
 }
@@ -46,7 +46,7 @@ h1 {
 }
 
 .enter-label {
-  font-size: 28px;
+  font-size: 40px;
   letter-spacing: 2px;
   margin-bottom: 20px;
 }
@@ -59,6 +59,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   font-size: 20px;
+  margin-top: 40px;
 }
 
 #exploreBtn {
@@ -139,6 +140,12 @@ input {
   transform: translate(-50%, -50%);
   opacity: 0.9;
   white-space: nowrap;
+  font-size: 56px;
+}
+/* Scale down the result screen */
+#result {
+  transform: scale(0.7);
+  transform-origin: center;
 }
 
 #infinity {
@@ -365,8 +372,8 @@ async function showTraceArchive() {
         setTimeout(() => {
           preInfinity.style.display = "none";
           infinity.style.display = "block";
-        }, 3000);
-      }, 2000);
+        }, 1600);
+      }, 1200);
 
       return;
     }
@@ -386,7 +393,7 @@ async function showTraceArchive() {
 
     archive.appendChild(line);
     index++;
-  }, 400);
+  }, 40);
 }
 
 function enterIdea() {
